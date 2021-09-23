@@ -1,0 +1,90 @@
+C51 COMPILER V9.54   MIAN                                                                  07/16/2021 11:28:23 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MIAN
+OBJECT MODULE PLACED IN .\Objects\mian.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE mian.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\mian.lst) OBJECT(.\Objects\mian.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "Delay.H"
+   4          
+   5          INT8U count = 0;
+   6          sbit LED1 = P1^1;
+   7          sbit LED2 = P1^2;
+   8          sbit button = P2^1;
+   9          
+  10          /*******************************************************************************
+  11          * 函 数 名              : Int0_Initialization（外部中断0初始化函数）
+  12          * 函数功能              : 外部中断初始化
+  13          * 输    入              : 无
+  14          * 输    出              : 无
+  15          *******************************************************************************/
+  16          void Int0_Initialization(void)
+  17          {
+  18   1              EA = 1;    //总中断打开
+  19   1              EX0 = 1;   //外部中断0打开
+  20   1              IT0 = 1;   //0-低电平触发  1-下降沿触发
+  21   1      }
+  22          
+  23          /*******************************************************************************
+  24          * 函 数 名         :  main主函数
+  25          * 函数功能                 :  按下五次按键触发一次下降沿将小灯取反，中断IO口为P3^2;
+  26                                                    外部中断信号可由外部产生也可以由内部产生，本程序用内部产生。 
+  27          * 输    入         :  无
+  28          * 输    出         :  无
+  29          *******************************************************************************/
+  30          void main(void)
+  31          {
+  32   1              Int0_Initialization();  //外部中断初始化
+  33   1              while(1)
+  34   1              {
+  35   2                      LED1 = 0;
+  36   2                      if(button == 0)      //检测按键1按下
+  37   2                      {
+  38   3                              DelayXms(10);    //延时消抖
+  39   3                              if(button == 0)
+  40   3                              {
+  41   4                                      count++;
+  42   4                                      if(count > 4)
+  43   4                                      {
+  44   5                                              P3_2 = 0;
+  45   5                                              DelayXms(1);
+  46   5                                              P3_2 = 1;
+  47   5                                              count = 0;
+  48   5                                      }
+  49   4                              }
+  50   3                              while(button != 1);   //松手检测
+  51   3                      }
+  52   2              }
+  53   1      }
+  54          
+C51 COMPILER V9.54   MIAN                                                                  07/16/2021 11:28:23 PAGE 2   
+
+  55          /*******************************************************************************
+  56          * 函 数 名              : Int0_Routine （外部中断0函数）
+  57          * 函数功能              : 计数到一定次数发送下降沿执行一次中断程序
+  58          * 输    入              : 无
+  59          * 输    出              : 无
+  60          *******************************************************************************/
+  61          void Int0_Routine(void) interrupt 0
+  62          {
+  63   1                      LED2 = !LED2; 
+  64   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     56    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

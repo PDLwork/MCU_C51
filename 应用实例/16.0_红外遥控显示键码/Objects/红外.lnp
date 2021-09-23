@@ -1,0 +1,10 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\Infrared.obj",
+".\Objects\Int.obj",
+".\Objects\LCD1602.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj" 
+TO ".\Objects\∫ÏÕ‚" 
+PRINT(".\Listings\∫ÏÕ‚.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

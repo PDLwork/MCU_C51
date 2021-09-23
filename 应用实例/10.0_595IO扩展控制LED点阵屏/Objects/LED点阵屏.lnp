@@ -1,0 +1,8 @@
+".\Objects\STARTUP.obj",
+".\Objects\74HC595.obj",
+".\Objects\Delay.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj" 
+TO ".\Objects\LEDµ„’Û∆¡" 
+PRINT(".\Listings\LEDµ„’Û∆¡.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

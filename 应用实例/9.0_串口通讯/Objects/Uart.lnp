@@ -1,0 +1,8 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\LCD1602.obj",
+".\Objects\main.obj",
+".\Objects\Uart.obj" 
+TO ".\Objects\Uart" 
+PRINT(".\Listings\Uart.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

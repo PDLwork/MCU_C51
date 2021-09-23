@@ -1,0 +1,8 @@
+"STARTUP.obj",
+"main.obj",
+"lcd1602.obj",
+"ds18b20.obj",
+"keypad.obj",
+"alarm.obj" 
+TO "温度测量显示装置" 
+RAMSIZE(256) 

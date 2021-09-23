@@ -1,0 +1,71 @@
+C51 COMPILER V9.54   MAIN                                                                  09/17/2021 01:31:27 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*******************************************************************************
+   2          实现功能：通过控制延时函数实现LED呼吸灯
+   3                                  （延时函数实现，比较消耗单片机资源 不推荐使用）
+   4          引脚定义：LED → P1^1
+   5          *******************************************************************************/
+   6          
+   7          #include <REGX52.H>
+   8          #include "UserDef.H"
+   9                                  
+  10          sbit LED1 = P1^1;
+  11          
+  12          INT8U Time;
+  13          
+  14          void Delay(INT8U i)             //声明一个延时较短的函数   实现PWM波周期短
+  15          {
+  16   1              while(i--);
+  17   1      }
+  18          
+  19          void main(void)
+  20          {
+  21   1              INT8U j;
+  22   1              while(1)
+  23   1              {
+  24   2                      for(Time = 0; Time <= 100; Time++)              //以100为周期
+  25   2                      {
+  26   3                              for(j = 0; j < 20; j++)         //在每个周期内延时一定时间
+  27   3                              {
+  28   4                                      LED1 = 0;
+  29   4                                      Delay(Time);
+  30   4                                      LED1 = 1;
+  31   4                                      Delay(100 - Time);
+  32   4                              }
+  33   3                      }
+  34   2                      for(Time = 0; Time <= 100; Time++)
+  35   2                      {
+  36   3                              for(j = 0; j < 20; j++)
+  37   3                              {
+  38   4                                      LED1 = 0;
+  39   4                                      Delay(100 - Time);
+  40   4                                      LED1 = 1;
+  41   4                                      Delay(Time);
+  42   4                              }
+  43   3                      }
+  44   2              }
+  45   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     75    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.54   MAIN                                                                  09/17/2021 01:31:27 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,54 @@
+C51 COMPILER V9.54   MAIN                                                                  08/01/2021 12:54:12 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "LCD1602.H"
+   4          #include "DS18B20.H"
+   5                  
+   6          float Temperature;
+   7                  
+   8          /*******************************************************************************
+   9          * 函 数 名         :  main （主函数）
+  10          * 函数功能                 :  主程循环执行
+  11          * 输    入         :  无
+  12          * 输    出         :  无
+  13          *******************************************************************************/
+  14          void main(void)
+  15          {
+  16   1              LCD_Initialization();
+  17   1              LCD_ShowString(1, 1, "Temperature:");
+  18   1              LCD_ShowChar(2, 4, '.');
+  19   1              while(1)
+  20   1              {
+  21   2                      DS18B20_ConverTemperature();
+  22   2                      Temperature = DS18B20_ReadTemperature();
+  23   2                      if(Temperature < 0)
+  24   2                              LCD_ShowChar(2, 1, '-');
+  25   2                      else
+  26   2                              LCD_ShowChar(2, 1, '+');
+  27   2                      LCD_ShowNumber(2, 2, Temperature);
+  28   2                      LCD_ShowNumber(2, 5, (unsigned long)(Temperature * 10000) % 10000);
+  29   2              }
+  30   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =     13    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

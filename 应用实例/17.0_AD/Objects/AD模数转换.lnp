@@ -1,0 +1,8 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\LCD1602.obj",
+".\Objects\main.obj",
+".\Objects\XPT2046.obj" 
+TO ".\Objects\AD模数转换" 
+PRINT(".\Listings\AD模数转换.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

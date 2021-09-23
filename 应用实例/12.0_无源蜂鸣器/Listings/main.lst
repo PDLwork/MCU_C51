@@ -1,0 +1,61 @@
+C51 COMPILER V9.54   MAIN                                                                  08/21/2021 13:04:54 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*******************************************************************************
+   2          实现功能：      1.矩阵键盘按下LCD显示虚键码
+   3                                  2.按键按下有音效
+   4          引脚定义：      LCD_RS  →      P2^6
+   5                                  LCD_RW  →      P2^5
+   6                                  LCD_E   →      P2^7
+   7                                  Buzzer  →      P2^4
+   8                                  LCD_DataPort P0 →      P0
+   9                                  Keyboard_line   →      P1
+  10          *******************************************************************************/
+  11          
+  12          #include <REGX52.H>
+  13          #include "UserDef.H"
+  14          #include "keyboard.H"
+  15          #include "LCD1602.H"
+  16          #include "Buzzer.H"
+  17          
+  18          /*******************************************************************************
+  19          * 函 数 名         :  main （主函数）
+  20          * 函数功能                 :  主程循环执行
+  21          * 输    入         :  无
+  22          * 输    出         :  无
+  23          *******************************************************************************/
+  24          void main(void)
+  25          {
+  26   1              LCD_Initialization();
+  27   1              LCD_ShowString(1, 1, "Hello World !");
+  28   1              while(1)
+  29   1              {
+  30   2                      KeyboardScan();
+  31   2                      if(KeyboardValue != 0)
+  32   2                      {
+  33   3                              Buzzer_Time(100);
+  34   3                              LCD_ShowNumber(2, 1, KeyboardValue);
+  35   3                      }
+  36   2              }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     44    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

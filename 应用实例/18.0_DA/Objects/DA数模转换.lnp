@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj",
+".\Objects\Delay.obj" 
+TO ".\Objects\DA数模转换" 
+PRINT(".\Listings\DA数模转换.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

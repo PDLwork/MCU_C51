@@ -1,0 +1,71 @@
+C51 COMPILER V9.54   KEYBOARD                                                              08/01/2021 12:54:12 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\keyboard.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE keyboard.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\keyboard.lst) OBJECT(.\Objects\keyboard.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "keyboard.H"
+   4          #include "Delay.H"
+   5          
+   6          INT8U KeyboardValue;
+   7          
+   8          /*******************************************************************************
+   9          * ∫Ø  ˝ √˚         : KeyboardScan(æÿ’Ûº¸≈Ã…®√Ë∫Ø ˝)
+  10          * ∫Ø ˝π¶ƒ‹                 : …®√Ëæÿ’Ûº¸≈Ã≤¢∑µªÿ–Èº¸¬Î
+  11          *  ‰    »Î         : Œﬁ
+  12          *  ‰    ≥ˆ         : KeyboardValue
+  13          *******************************************************************************/
+  14          extern INT8U KeyboardScan(void)
+  15          {
+  16   1              KeyboardValue = 0;
+  17   1              Keyboard_line = 0x0f;
+  18   1              if(Keyboard_line != 0x0f)
+  19   1              {
+  20   2                      DelayXms(10);
+  21   2                      if(Keyboard_line != 0x0f)
+  22   2                      {
+  23   3                              //≤‚ ‘¡–
+  24   3                              Keyboard_line = 0x0f;
+  25   3                              switch(Keyboard_line)
+  26   3                              {
+  27   4                                      case(0X07):     KeyboardValue = 1; break;
+  28   4                                      case(0X0B):     KeyboardValue = 2; break;
+  29   4                                      case(0X0D): KeyboardValue = 3; break;
+  30   4                                      case(0X0E):     KeyboardValue = 4; break;
+  31   4                              }
+  32   3                              //≤‚ ‘––
+  33   3                              Keyboard_line=0Xf0;
+  34   3                              switch(Keyboard_line)
+  35   3                              {
+  36   4                                      case(0X70):     KeyboardValue = KeyboardValue; break;
+  37   4                                      case(0XB0):     KeyboardValue = KeyboardValue + 4; break;
+  38   4                                      case(0XD0): KeyboardValue = KeyboardValue + 8; break;
+  39   4                                      case(0XE0):     KeyboardValue = KeyboardValue + 12; break;
+  40   4                              }
+  41   3                      }
+  42   2                      while(Keyboard_line != 0Xf0);   //À… ÷ºÏ≤‚
+  43   2              }
+  44   1              return KeyboardValue;   
+  45   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    113    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.54   KEYBOARD                                                              08/01/2021 12:54:12 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

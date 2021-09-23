@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\Delay.obj",
+".\Objects\ButtonScan.obj" 
+TO ".\Objects\独立按键" 
+PRINT(".\Listings\独立按键.m51") RAMSIZE(256) 

@@ -1,0 +1,9 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\keyboard.obj",
+".\Objects\LCD1602.obj",
+".\Objects\main.obj",
+".\Objects\Buzzer.obj" 
+TO ".\Objects\·äÃùÆ÷" 
+PRINT(".\Listings\·äÃùÆ÷.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\LCD1602.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj" 
+TO ".\Objects\定时器时钟" 
+PRINT(".\Listings\定时器时钟.m51") RAMSIZE(256) 

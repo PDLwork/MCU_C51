@@ -1,0 +1,75 @@
+C51 COMPILER V9.54   74HC595                                                               09/16/2021 11:46:14 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE 74HC595
+OBJECT MODULE PLACED IN .\Objects\74HC595.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE 74HC595.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\74HC595.lst) OBJECT(.\Objects\74HC595.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "74HC595.H"
+   4          
+   5          /*******************************************************************************
+   6          * 函 数 名              : _74HC595_Initialization （595芯片初始化）
+   7          * 函数功能              : 595芯片复位初始化
+   8          * 输    入              : 无
+   9          * 输    出              : 无
+  10          *******************************************************************************/
+  11          extern void _74HC595_Initialization()
+  12          {
+  13   1              _595_SRCLK = 0;
+  14   1              _595_RCLK = 0;
+  15   1      }
+  16          
+  17          /*******************************************************************************
+  18          * 函 数 名              : _74HC595_SendByte （595写字节函数）
+  19          * 函数功能              : 595写入字节
+  20          * 输    入              : amount  (595写入字节数）
+  21                                            _595_Byte1（写入字节1）
+  22                                            _595_Byte2（写入字节2，若没有输入0）
+  23                                            _595_Byte3（写入字节2，若没有输入0）
+  24          * 输    出              : 无
+  25          *******************************************************************************/
+  26          static void _74HC595_SendByte(INT8U amount, _595_Byte1, _595_Byte2, _595_Byte3)
+  27          {
+  28   1              INT8U i;
+  29   1              if(amount >= 1)
+  30   1              {
+  31   2                      for(i = 0; i < 8; i++)
+  32   2                      {
+  33   3                              _595_SER = _595_Byte1 & (0x80 >> i);
+  34   3                              _595_SRCLK = 1;
+  35   3                              _595_SRCLK = 0;
+  36   3                      }
+  37   2              }
+  38   1              if(amount >= 2)
+  39   1              {
+  40   2                      for(i = 0; i < 8; i++)
+  41   2                      {
+  42   3                              _595_SER = _595_Byte2 & (0x80 >> i);
+  43   3                              _595_SRCLK = 1;
+  44   3                              _595_SRCLK = 0;
+  45   3                      }
+  46   2              }
+  47   1              _595_RCLK = 1;
+  48   1              _595_RCLK = 0;
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    108    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.54   74HC595                                                               09/16/2021 11:46:14 PAGE 2   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,85 @@
+C51 COMPILER V9.54   MAIN                                                                  07/24/2021 20:57:26 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "Delay.h"
+   4          #include "LCD1602.h"
+   5          #include "Timer.H"
+   6          
+   7          char Second = 50, Minute = 59, Hour = 21;
+   8          
+   9          /*******************************************************************************
+  10          * 函 数 名         :  main （主函数）
+  11          * 函数功能                 :  主程循环执行
+  12          * 输    入         :  无
+  13          * 输    出         :  无
+  14          *******************************************************************************/
+  15          void main(void)
+  16          {
+  17   1              Timer0_Initialization();
+  18   1              LCD_Initialization();
+  19   1              LCD_ShowString(1, 1, "Clock:");
+  20   1              LCD_ShowChar(2, 3, ':');
+  21   1              LCD_ShowChar(2, 6, ':');
+  22   1              while(1)
+  23   1              {
+  24   2                      LCD_ShowNumber(2, 1, Hour);
+  25   2                      LCD_ShowNumber(2, 4, Minute);
+  26   2                      LCD_ShowNumber(2, 7, Second);
+  27   2              }
+  28   1      }
+  29          
+  30          /*******************************************************************************
+  31          * 函 数 名         : Timer0_Routine 定时器0主函数
+  32          * 函数功能                 : 计时器计时一定时间执行内容
+  33          * 输    入         : 无
+  34          * 输    出         : 无
+  35          *******************************************************************************/
+  36          void Timer0_Routine() interrupt 1
+  37          {
+  38   1              static INT16U count;
+  39   1              TL0 = 0x18;             //重置定时初值
+  40   1              TH0 = 0xFC;             //重置定时初值
+  41   1              count++;
+  42   1              if(count >= 1000)
+  43   1              {
+  44   2                      count = 0;
+  45   2                      Second++;
+  46   2                      if(Second >= 60)
+  47   2                      {
+  48   3                              Second = 0;
+  49   3                              Minute++;
+  50   3                              if(Minute >= 60)
+  51   3                              {
+  52   4                                      Minute = 0;
+  53   4                                      Hour++;
+  54   4                                      if(Hour >= 24)
+C51 COMPILER V9.54   MAIN                                                                  07/24/2021 20:57:26 PAGE 2   
+
+  55   4                                              Hour = 0;
+  56   4                              }
+  57   3                      }
+  58   2              }
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    158    ----
+   CONSTANT SIZE    =      7    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

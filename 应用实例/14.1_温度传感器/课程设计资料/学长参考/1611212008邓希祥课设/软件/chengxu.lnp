@@ -1,0 +1,6 @@
+"STARTUP.obj",
+"chengxu.obj",
+"DS18B20_1.obj",
+"DS18B20_2.obj" 
+TO "chengxu" 
+RAMSIZE(256) 

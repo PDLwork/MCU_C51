@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\main.obj",
+".\Objects\138showLEDsite.obj" 
+TO ".\Objects\动态数码管显示数字" 
+PRINT(".\Listings\动态数码管显示数字.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

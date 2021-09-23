@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\Delay.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj" 
+TO ".\Objects\热爱105°C的你" 
+PRINT(".\Listings\热爱105°C的你.m51") RAMSIZE(256) 

@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\Timer.obj",
+".\Objects\ButtonScan.obj",
+".\Objects\Delay.obj" 
+TO ".\Objects\直流电机" 
+PRINT(".\Listings\直流电机.m51") RAMSIZE(256) 

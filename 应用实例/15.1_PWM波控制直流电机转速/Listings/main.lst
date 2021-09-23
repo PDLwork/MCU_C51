@@ -1,0 +1,114 @@
+C51 COMPILER V9.54   MAIN                                                                  08/02/2021 13:54:40 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*******************************************************************************
+   2          ÊµÏÖ¹¦ÄÜ £º     Í¨¹ý°´¼ü¿ØÖÆÂí´ï×ªËÙ£¬²¢ÔÚÊýÂë¹ÜÏÔÊ¾µ²Î»
+   3                                  °´¼ü1°´ÏÂ£¬ËÙ¶ÈÔö¼Ó
+   4                                  °´¼ü2°´ÏÂ£¬ËÙ¶È¼õÉÙ
+   5                                  °´¼ü3°´ÏÂ£¬ËÙ¶È¹éÁã
+   6                                  
+   7          Òý½Å¶¨Òå £º     Motor   ¡ú      P2^2
+   8                                  smg             ¡ú      P0
+   9                                  Button  ¡ú      P1
+  10          *******************************************************************************/
+  11                  
+  12          #include <REGX52.H>
+  13          #include "UserDef.H"
+  14          #include "Timer.H"
+  15          #include "ButtonScan.H"
+  16          
+  17          sbit Motor = P2^2;
+  18          #define smg P0
+  19          
+  20          INT8U Compare;          //ÓÃÓÚ±È½ÏÊä³öPWM²¨ÐÎ (·¶Î§Îª0¡ª100)
+  21          INT8S Speed;            //ËÙ¶Èµ²Î» (·¶Î§Îª0¡ª3 0£º²»¶¯ 1¡ª3£ºËÙ¶ÈÖð½¥Ôö¼Ó)
+  22          INT8U NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e};//¹²Ñ
+             -ôÊýÂë¹Ü´úÂë±í"0-F"(aÎª×îµÍÎ»)
+  23          
+  24          
+  25          /*******************************************************************************
+  26          * º¯ Êý Ãû         :  main £¨Ö÷º¯Êý£©
+  27          * º¯Êý¹¦ÄÜ                 :  Ö÷³ÌÑ­»·Ö´ÐÐ
+  28          * Êä    Èë         :  ÎÞ
+  29          * Êä    ³ö         :  ÎÞ
+  30          *******************************************************************************/
+  31          void main(void)
+  32          {
+  33   1              Timer0_Initialization();
+  34   1              Compare = 0;
+  35   1              smg = NixieTable[Speed];
+  36   1              while(1)
+  37   1              {
+  38   2                      ButtonScan();           //¼üÅÌÉ¨Ãè
+  39   2                      
+  40   2                      if(Button_Value)        //Í¨¹ý°´¼ü¸Ä±äËÙ¶ÈÖµ
+  41   2                      {
+  42   3                              if(Button_Value == 1)
+  43   3                              {
+  44   4                                      Speed++;
+  45   4                                      if(Speed > 3)
+  46   4                                              Speed = 3;
+  47   4                              }
+  48   3                              if(Button_Value == 2)
+  49   3                              {
+  50   4                                      Speed--;
+  51   4                                      if(Speed < 0)
+  52   4                                              Speed = 0;
+  53   4                              }       
+C51 COMPILER V9.54   MAIN                                                                  08/02/2021 13:54:40 PAGE 2   
+
+  54   3                              if(Button_Value == 3)
+  55   3                                      Speed = 0;
+  56   3                      }
+  57   2                      
+  58   2                      smg = NixieTable[Speed];                //ÏÔÊ¾ËÙ¶ÈÖµ
+  59   2                      
+  60   2                      switch(Speed)           //¸ù¾ÝËÙ¶ÈÖµÑ¡Ôñ±È½ÏÖµÊä³ö¶ÔÓ¦µÄPWM²¨ÐÎ
+  61   2                      {
+  62   3                              case(0): Compare = 0;   break;
+  63   3                              case(1): Compare = 50;  break;
+  64   3                              case(2): Compare = 75;  break;
+  65   3                              case(3): Compare = 100; break;
+  66   3                      }
+  67   2              }
+  68   1      }
+  69          
+  70          /*******************************************************************************
+  71          * º¯ Êý Ãû         : Timer_Routine ¶¨Ê±Æ÷Ö÷º¯Êý
+  72          * º¯Êý¹¦ÄÜ                 : ¼ÆÊ±Æ÷¼ÆÊ±Ò»¶¨Ê±¼äÖ´ÐÐÄÚÈÝ
+  73          * Êä    Èë         : ÎÞ
+  74          * Êä    ³ö         : ÎÞ
+  75          *******************************************************************************/
+  76          void Timer0_Routine() interrupt 1
+  77          {
+  78   1              static INT8U count;
+  79   1              TL0 = 0x9C;             //ÖØÖÃ¶¨Ê±³õÊ¼Öµ100Î¢Ãë 
+  80   1              TH0 = 0xFF;
+  81   1          count++;
+  82   1              count %= 100;   //ÊµÏÖ³¬¹ý100¹éÁã  ¿ÉÒÔÈ¡´úifÅÐ¶Ï  Ò»¸öPWMµÄÖÜÆÚÎª100*100us¼´10ms
+  83   1              if(count < Compare)
+  84   1                      Motor = 1;
+  85   1              else
+  86   1                      Motor = 0;
+  87   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    151    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     19    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

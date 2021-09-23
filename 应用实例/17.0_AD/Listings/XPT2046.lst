@@ -1,0 +1,64 @@
+C51 COMPILER V9.54   XPT2046                                                               08/28/2021 23:37:22 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE XPT2046
+OBJECT MODULE PLACED IN .\Objects\XPT2046.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE XPT2046.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\XPT2046.lst) OBJECT(.\Objects\XPT2046.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "UserDef.H"
+   3          #include "XPT2046.H"
+   4          
+   5          /*******************************************************************************
+   6          * 函 数 名              : XPT2046_ReadAD模数转换函数
+   7          * 函数功能              : 输入读取命令字即可将对应引脚的模拟量转换为数字量
+   8          * 输    入              : Command       输入的命令字
+   9          * 输    出              : 无
+  10          *******************************************************************************/
+  11          extern INT16U XPT2046_ReadAD(INT8U Command)
+  12          {
+  13   1              INT16U ADValue = 0;
+  14   1              INT8U i;
+  15   1              
+  16   1              XPT2046_DCLK = 0;               //时序初始化
+  17   1              XPT2046_CS = 0;                 //片选芯片
+  18   1              
+  19   1              for(i = 0; i < 8; i++)          //写入命令字
+  20   1              {
+  21   2                      XPT2046_DIN = Command & (0x80 >>i);
+  22   2                      XPT2046_DCLK = 1;
+  23   2                      XPT2046_DCLK = 0;
+  24   2              }
+  25   1              
+  26   1              for(i = 0; i < 16; i++)         //读取16位AD值，精度分8位和12位，末位补零
+  27   1              {
+  28   2                      XPT2046_DCLK = 1;
+  29   2                      XPT2046_DCLK = 0;
+  30   2                      if(XPT2046_DOUT == 1)
+  31   2                              ADValue |= (0x8000 >> i);
+  32   2              }
+  33   1              
+  34   1              XPT2046_CS = 1;                 //读取完毕释放芯片
+  35   1              
+  36   1              if(Command & 0x08)              //判断当前转换精度，在进行适当移位
+  37   1                      return ADValue >> 8;
+  38   1              else
+  39   1                      return ADValue >> 4;
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    110    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
