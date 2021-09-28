@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  09/27/2021 21:08:22 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  09/28/2021 02:35:11 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -21,16 +21,17 @@ line level    source
   11          void main(void)
   12          {
   13   1              Oled_Initialization();
-  14   1              Oled_ShowChar(8, 10, 'a');
-  15   1              while(1)
-  16   1              {
-  17   2                      
-  18   2              }
-  19   1      }
+  14   1              Oled_Clear();
+  15   1              Oled_ShowChar(5, 1, 'a');
+  16   1              while(1)
+  17   1              {
+  18   2                      
+  19   2              }
+  20   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     18    ----
+   CODE SIZE        =     21    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

@@ -103,11 +103,11 @@ static void Oled_WriteCommand(INT8U Oled_Command)
 {
 	I2C_Start();
 	I2C_SendByte(0x78);			//发送从机地址 读写位R/W#=0  SA0=0
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_SendByte(0x00);			//write command  命令数据位D/C#=0;
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_SendByte(Oled_Command);
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_Stop();
 }
 
@@ -115,11 +115,11 @@ static void Oled_WriteData(INT8U Oled_Data)
 {
 	I2C_Start();
 	I2C_SendByte(0x78);			//发送从机地址 读写位R/W#=0  SA0=0
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_SendByte(0x40);			//writedata  命令数据位D/C#=1;
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_SendByte(Oled_Data);
-	I2C_ReceiveByte();
+	I2C_ReceiveAck();
 	I2C_Stop();
 }
 
@@ -130,7 +130,7 @@ extern void Oled_Initialization(void)
 	Oled_WriteCommand(0x10);//---set high column address
 	Oled_WriteCommand(0x40);//--set start line address  
 	Oled_WriteCommand(0xB0);//--set page address
-	Oled_WriteCommand(0x81); // contract control
+	Oled_WriteCommand(0x81);// contract control
 	Oled_WriteCommand(0xFF);//--128   
 	Oled_WriteCommand(0xA1);//set segment remap 
 	Oled_WriteCommand(0xA6);//--normal / reverse
@@ -177,9 +177,7 @@ extern void Oled_ShowChar(INT8U X, Y, Oled_Char)
 	Oled_SetPosition(X, Y);
 	
 	for(i = 0; i < 6; i++)
-	{
 		Oled_WriteData(F6x8[c][i]);
-	}
 	
 //		if(Char_Size ==16)
 //			{
@@ -196,4 +194,17 @@ extern void Oled_ShowChar(INT8U X, Y, Oled_Char)
 //				OLED_WR_Byte(F6x8[c][i],OLED_DATA);
 //				
 //			}
+}
+
+extern void Oled_Clear(void)
+{
+	INT8U i,j;
+	for(i = 0; i < 8; i++)
+	{
+		Oled_WriteCommand(0xB0 + i);
+		Oled_WriteCommand(0x00);
+		Oled_WriteCommand(0x10);
+		for(j = 0; j < 128; j++)
+			Oled_WriteData(0); 
+	}
 }

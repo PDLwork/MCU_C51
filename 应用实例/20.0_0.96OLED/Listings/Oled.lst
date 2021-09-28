@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   OLED                                                                  09/27/2021 21:08:22 PAGE 1   
+C51 COMPILER V9.54   OLED                                                                  09/28/2021 02:35:11 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE OLED
@@ -62,7 +62,7 @@ line level    source
   52          0x00, 0x7F, 0x40, 0x40, 0x40, 0x40,// L
   53          0x00, 0x7F, 0x02, 0x0C, 0x02, 0x7F,// M
   54          0x00, 0x7F, 0x04, 0x08, 0x10, 0x7F,// N
-C51 COMPILER V9.54   OLED                                                                  09/27/2021 21:08:22 PAGE 2   
+C51 COMPILER V9.54   OLED                                                                  09/28/2021 02:35:11 PAGE 2   
 
   55          0x00, 0x3E, 0x41, 0x41, 0x41, 0x3E,// O
   56          0x00, 0x7F, 0x09, 0x09, 0x09, 0x06,// P
@@ -126,7 +126,7 @@ line level    source
  114          static void Oled_WriteData(INT8U Oled_Data)
  115          {
  116   1              I2C_Start();
-C51 COMPILER V9.54   OLED                                                                  09/27/2021 21:08:22 PAGE 3   
+C51 COMPILER V9.54   OLED                                                                  09/28/2021 02:35:11 PAGE 3   
 
  117   1              I2C_SendByte(0x78);                     //发送从机地址 读写位R/W#=0  SA0=0
  118   1              I2C_ReceiveByte();
@@ -144,7 +144,7 @@ line level    source
  130   1              Oled_WriteCommand(0x10);//---set high column address
  131   1              Oled_WriteCommand(0x40);//--set start line address  
  132   1              Oled_WriteCommand(0xB0);//--set page address
- 133   1              Oled_WriteCommand(0x81); // contract control
+ 133   1              Oled_WriteCommand(0x81);// contract control
  134   1              Oled_WriteCommand(0xFF);//--128   
  135   1              Oled_WriteCommand(0xA1);//set segment remap 
  136   1              Oled_WriteCommand(0xA6);//--normal / reverse
@@ -190,35 +190,46 @@ line level    source
  176   1              
  177   1              Oled_SetPosition(X, Y);
  178   1              
-C51 COMPILER V9.54   OLED                                                                  09/27/2021 21:08:22 PAGE 4   
+C51 COMPILER V9.54   OLED                                                                  09/28/2021 02:35:11 PAGE 4   
 
  179   1              for(i = 0; i < 6; i++)
- 180   1              {
- 181   2                      Oled_WriteData(F6x8[c][i]);
- 182   2              }
- 183   1              
- 184   1      //              if(Char_Size ==16)
- 185   1      //                      {
- 186   1      //                      OLED_Set_Pos(x,y);      
- 187   1      //                      for(i=0;i<8;i++)
- 188   1      //                      OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
- 189   1      //                      OLED_Set_Pos(x,y+1);
- 190   1      //                      for(i=0;i<8;i++)
- 191   1      //                      OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
- 192   1      //                      }
- 193   1      //                      else {  
- 194   1      //                              OLED_Set_Pos(x,y);
- 195   1      //                              for(i=0;i<6;i++)
- 196   1      //                              OLED_WR_Byte(F6x8[c][i],OLED_DATA);
- 197   1      //                              
- 198   1      //                      }
- 199   1      }
+ 180   1                      Oled_WriteData(F6x8[c][i]);
+ 181   1              
+ 182   1      //              if(Char_Size ==16)
+ 183   1      //                      {
+ 184   1      //                      OLED_Set_Pos(x,y);      
+ 185   1      //                      for(i=0;i<8;i++)
+ 186   1      //                      OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
+ 187   1      //                      OLED_Set_Pos(x,y+1);
+ 188   1      //                      for(i=0;i<8;i++)
+ 189   1      //                      OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
+ 190   1      //                      }
+ 191   1      //                      else {  
+ 192   1      //                              OLED_Set_Pos(x,y);
+ 193   1      //                              for(i=0;i<6;i++)
+ 194   1      //                              OLED_WR_Byte(F6x8[c][i],OLED_DATA);
+ 195   1      //                              
+ 196   1      //                      }
+ 197   1      }
+ 198          
+ 199          extern void Oled_Clear(void)
+ 200          {
+ 201   1              INT8U i,j;
+ 202   1              for(i = 0; i < 8; i++)
+ 203   1              {
+ 204   2                      Oled_WriteCommand(0xB0 + i);
+ 205   2                      Oled_WriteCommand(0x00);
+ 206   2                      Oled_WriteCommand(0x10);
+ 207   2                      for(j = 0; j < 128; j++)
+ 208   2                              Oled_WriteData(0); 
+ 209   2              }
+ 210   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    320    ----
+   CODE SIZE        =    383    ----
    CONSTANT SIZE    =    552    ----
-   XDATA SIZE       =   ----       5
+   XDATA SIZE       =   ----       7
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

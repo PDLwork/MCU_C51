@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   I2C                                                                   09/27/2021 21:08:22 PAGE 1   
+C51 COMPILER V9.54   I2C                                                                   09/28/2021 02:35:11 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE I2C
@@ -62,7 +62,7 @@ line level    source
   52          * 输    入              : 无
   53          * 输    出              : Byte（读取字节内容）
   54          *******************************************************************************/
-C51 COMPILER V9.54   I2C                                                                   09/27/2021 21:08:22 PAGE 2   
+C51 COMPILER V9.54   I2C                                                                   09/28/2021 02:35:11 PAGE 2   
 
   55          extern INT8U I2C_ReceiveByte(void)
   56          {

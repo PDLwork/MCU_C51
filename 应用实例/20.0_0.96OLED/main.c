@@ -11,7 +11,8 @@
 void main(void)
 {
 	Oled_Initialization();
-	Oled_ShowChar(8, 10, 'a');
+	Oled_Clear();
+	Oled_ShowChar(5, 1, 'a');
 	while(1)
 	{
 		
