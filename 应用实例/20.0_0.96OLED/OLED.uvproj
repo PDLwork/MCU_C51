@@ -389,6 +389,11 @@
               <FileType>1</FileType>
               <FilePath>.\I2C.c</FilePath>
             </File>
+            <File>
+              <FileName>OledDefineCode.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OledDefineCode.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
