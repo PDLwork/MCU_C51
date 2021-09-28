@@ -84,6 +84,19 @@ static void Oled_SetPosition(INT8U X, Y)
 	Oled_WriteCommand(X & 0x0f);
 }
 
+extern void Oled_Clear(void)
+{
+	INT8U i,j;
+	for(i = 0; i < 8; i++)
+	{
+		Oled_WriteCommand(0xB0 + i);
+		Oled_WriteCommand(0x00);
+		Oled_WriteCommand(0x10);
+		for(j = 0; j < 128; j++)
+			Oled_WriteData(0); 
+	}
+}
+
 extern void Oled_ShowChar(INT8U X, Y, Oled_Char)
 {
 	INT8U OffsetAddress, i;
@@ -112,15 +125,33 @@ extern void Oled_ShowChar(INT8U X, Y, Oled_Char)
 //			}
 }
 
-extern void Oled_Clear(void)
+extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String)
 {
-	INT8U i,j;
-	for(i = 0; i < 8; i++)
+	INT8U i;
+	
+	Oled_SetPosition(X, Y);
+	
+	for(i = 0; Oled_String[i] != '\0'; i++)
 	{
-		Oled_WriteCommand(0xB0 + i);
-		Oled_WriteCommand(0x00);
-		Oled_WriteCommand(0x10);
-		for(j = 0; j < 128; j++)
-			Oled_WriteData(0); 
+		Oled_ShowChar(X, Y, Oled_String[i]);
+		X += 8;
+		if(X > 120)
+		{
+			X = 0;
+			Y += 2;
+		}
+	}
+}
+
+extern void Oled_Test(void)
+{
+	INT8U i, j, z;
+	for(i = 0; i < 64; i++)
+	{
+		z = i / 8;
+		if(i % 8 == 0)
+			Oled_SetPosition(0, z);
+		for(j = 0; j < 16; j++)
+			Oled_WriteData(Photo[i][j]);
 	}
 }
