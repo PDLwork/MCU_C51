@@ -97,48 +97,70 @@ extern void Oled_Clear(void)
 	}
 }
 
-extern void Oled_ShowChar(INT8U X, Y, Oled_Char)
+extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize)
 {
 	INT8U OffsetAddress, i;
 	
 	OffsetAddress = Oled_Char - ' ';	//得到偏移后的值,空格为ASCⅡ码的初始位置
 	
-	Oled_SetPosition(X, Y);
-	
-	for(i = 0; i < 6; i++)
-		Oled_WriteData(ASC2Code6x8[OffsetAddress][i]);
-	
-//		if(Char_Size ==16)
-//			{
-//			OLED_Set_Pos(x,y);	
-//			for(i=0;i<8;i++)
-//			OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
-//			OLED_Set_Pos(x,y+1);
-//			for(i=0;i<8;i++)
-//			OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
-//			}
-//			else {	
-//				OLED_Set_Pos(x,y);
-//				for(i=0;i<6;i++)
-//				OLED_WR_Byte(F6x8[c][i],OLED_DATA);
-//				
-//			}
+	if(FontSize == SmallSize)
+	{
+		Oled_SetPosition(X, Y);
+		
+		for(i = 0; i < 8; i++)
+			Oled_WriteData(ASC2Code8x8[OffsetAddress][i]);
+	}
+	if(FontSize == MediumSize)
+	{
+		Oled_SetPosition(X, Y);
+		
+		for(i = 0; i < 8; i++)
+			Oled_WriteData(ASC2Code8x16[OffsetAddress][i]);
+		
+		Oled_SetPosition(X, Y + 1);
+		
+		for(i = 8; i < 16; i++)
+			Oled_WriteData(ASC2Code8x16[OffsetAddress][i]);
+	}
 }
 
-extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String)
+extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String, bit FontSize)
 {
-	INT8U i;
+	INT8U i, j, OffsetAddress;
 	
-	Oled_SetPosition(X, Y);
-	
-	for(i = 0; Oled_String[i] != '\0'; i++)
+	if(FontSize == SmallSize)
 	{
-		Oled_ShowChar(X, Y, Oled_String[i]);
-		X += 8;
-		if(X > 120)
+		Oled_SetPosition(X, Y);
+		
+		for(i = 0; Oled_String[i] != '\0'; i++)
 		{
-			X = 0;
-			Y += 2;
+			OffsetAddress = Oled_String[i] - ' ';
+			
+			for(j = 0; j < 8; j++)
+				Oled_WriteData(ASC2Code8x8[OffsetAddress][j]);
+			
+			X += 8;
+			if(X > 120)
+			{
+				X = 0;
+				Y ++;
+				Oled_SetPosition(X, Y);
+			}
+		}
+	}
+	if(FontSize == MediumSize)
+	{
+		for(i = 0; Oled_String[i] != '\0'; i++)
+		{
+			Oled_ShowChar(X,Y, Oled_String[i], FontSize);
+			
+			X += 8;
+			if(X > 120)
+			{
+				X = 0;
+				Y += 2;
+				Oled_SetPosition(X, Y);
+			}
 		}
 	}
 }
