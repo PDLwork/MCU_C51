@@ -1,6 +1,6 @@
 //OLED的显存
 //存放格式如下.
-//[0]0 1 2 3 ... 127	
+//[0]0 1 2 3 ... 127	上面为低位
 //[1]0 1 2 3 ... 127	
 //[2]0 1 2 3 ... 127	
 //[3]0 1 2 3 ... 127	
@@ -124,7 +124,7 @@ extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize)
 	}
 }
 
-extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String, bit FontSize)
+extern void Oled_ShowString(INT8U X, Y, INT8U *Oled_String, bit FontSize)
 {
 	INT8U i, j, OffsetAddress;
 	
@@ -165,7 +165,7 @@ extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String, bit FontSize)
 	}
 }
 
-extern void Oled_Test(void)
+extern void Oled_ShowPhoto(void)
 {
 	INT8U i, j, z;
 	for(i = 0; i < 64; i++)
@@ -176,4 +176,19 @@ extern void Oled_Test(void)
 		for(j = 0; j < 16; j++)
 			Oled_WriteData(Photo[i][j]);
 	}
+}
+
+extern void Oled_ShowChinse(INT8U X, Y, Chinse_Number)
+{
+	INT8U i;
+	
+	Oled_SetPosition(X, Y);
+	
+	for(i = 0; i < 16; i++)
+		Oled_WriteData(Chinese[Chinse_Number][i]);
+	
+	Oled_SetPosition(X, Y + 1);
+	
+	for(i = 16; i < 32; i++)
+		Oled_WriteData(Chinese[Chinse_Number][i]);
 }

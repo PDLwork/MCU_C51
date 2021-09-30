@@ -8,6 +8,7 @@ extern void Oled_Initialization();
 extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize);
 extern void Oled_Clear();
 extern void Oled_ShowString(INT8U X, Y,INT8U *Oled_String, bit FontSize);
-extern void Oled_Test();
+extern void Oled_ShowPhoto();
+extern void Oled_ShowChinse(INT8U X, Y, Chinse_Number);
 
 #endif
