@@ -15,6 +15,12 @@
 #include "I2C.H"
 #include "OledDefineCode.H"
 
+/*******************************************************************************
+* 函 数 名		: Oled_WriteCommand（Oled写命令函数） 
+* 函数功能		: 向Oled写入命令
+* 输    入 		: Oled_Command（写入命令内容）
+* 输    出		: 无
+*******************************************************************************/
 static void Oled_WriteCommand(INT8U Oled_Command)
 {
 	I2C_Start();
@@ -27,6 +33,12 @@ static void Oled_WriteCommand(INT8U Oled_Command)
 	I2C_Stop();
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_WriteData（Oled写数据函数） 
+* 函数功能		: 向Oled写入数据
+* 输    入 		: Oled_WriteData（写入数据内容）
+* 输    出		: 无
+*******************************************************************************/
 static void Oled_WriteData(INT8U Oled_Data)
 {
 	I2C_Start();
@@ -39,6 +51,12 @@ static void Oled_WriteData(INT8U Oled_Data)
 	I2C_Stop();
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_Initialization（Oled初始化函数）
+* 函数功能		: 将Oled初始化后才可以使用该液晶显示屏（暂时没搞懂）
+* 输    入 		: 无
+* 输    出		: 无
+*******************************************************************************/
 extern void Oled_Initialization(void)
 {
 	Oled_WriteCommand(0xAE);//--display off
@@ -77,6 +95,13 @@ extern void Oled_Initialization(void)
 	Oled_WriteCommand(0xAF);//--turn on oled panel
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_SetPosition（设置显示位置函数）
+* 函数功能		: 输入显示页数和列数就可以确定显示位置
+* 输    入 		: X（显示的列数，范围：0-127）
+				  Y（显示页数，范围：0-7）
+* 输    出		: 无
+*******************************************************************************/
 static void Oled_SetPosition(INT8U X, Y)
 {
 	Oled_WriteCommand(0xB0 + Y);
@@ -84,6 +109,12 @@ static void Oled_SetPosition(INT8U X, Y)
 	Oled_WriteCommand(X & 0x0f);
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_Clear（Oled清屏指令）
+* 函数功能		: 将Oled显示屏内容清除
+* 输    入 		: 无
+* 输    出		: 无
+*******************************************************************************/
 extern void Oled_Clear(void)
 {
 	INT8U i,j;
@@ -97,6 +128,15 @@ extern void Oled_Clear(void)
 	}
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_ShowChar（显示字符函数）
+* 函数功能		: 输入显示位置与显示
+* 输    入 		: X（显示的列数，范围：0-127）
+				  Y（显示页数，范围：0-7）
+				  Oled_Char（显示的字符）
+				  FontSize（字体大小，可选SmallSize、MediumSize）
+* 输    出		: 无
+*******************************************************************************/
 extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize)
 {
 	INT8U OffsetAddress, i;
@@ -124,6 +164,15 @@ extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize)
 	}
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_ShowString（显示字符串函数）
+* 函数功能		: 输入显示位置与显示内容跟显示字体大小就可以显示字符串且拥有自动换行功能
+* 输    入 		: X（显示的列数，范围：0-127）
+				  Y（显示页数，范围：0-7）
+				  Oled_String（显示的字符串数组）
+				  FontSize（字体大小，可选SmallSize、MediumSize）
+* 输    出		: 
+*******************************************************************************/
 extern void Oled_ShowString(INT8U X, Y, INT8U *Oled_String, bit FontSize)
 {
 	INT8U i, j, OffsetAddress;
@@ -165,6 +214,12 @@ extern void Oled_ShowString(INT8U X, Y, INT8U *Oled_String, bit FontSize)
 	}
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_ShowPhoto（显示图片函数）
+* 函数功能		: 在Oled上显示预先取模的图片
+* 输    入 		: 无
+* 输    出		: 无
+*******************************************************************************/
 extern void Oled_ShowPhoto(void)
 {
 	INT8U i, j, z;
@@ -178,6 +233,14 @@ extern void Oled_ShowPhoto(void)
 	}
 }
 
+/*******************************************************************************
+* 函 数 名		: Oled_ShowChinse（显示中文函数）
+* 函数功能		: 可以显示预先设置好的中文，可在OledDefineCode.H中查询对应中文代号
+* 输    入 		: X（显示的列数，范围：0-127）
+				  Y（显示页数，范围：0-7）
+				  Oled_ShowChinse（显示的中文代号）
+* 输    出		: 无
+*******************************************************************************/
 extern void Oled_ShowChinse(INT8U X, Y, Chinse_Number)
 {
 	INT8U i;
