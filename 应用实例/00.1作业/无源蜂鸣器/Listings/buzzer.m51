@@ -1,9 +1,9 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        09/25/2021  10:44:40  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        09/29/2021  15:03:22  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
-D:\SOFTWARE\KEIL5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj TO .\Objects\buzzer PRINT (.\Listings\buzze
->> r.m51) RAMSIZE (256) DISABLEWARNING (16)
+D:\SOFTWARE\KEIL5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj, .\Objects\Buzeer.obj, .\Objects\Delay.obj 
+>> TO .\Objects\buzzer PRINT (.\Listings\buzzer.m51) RAMSIZE (256) DISABLEWARNING (16)
 
 
 MEMORY MODEL: SMALL
@@ -12,6 +12,8 @@ MEMORY MODEL: SMALL
 INPUT MODULES INCLUDED:
   .\Objects\STARTUP.obj (?C_STARTUP)
   .\Objects\main.obj (MAIN)
+  .\Objects\Buzeer.obj (BUZEER)
+  .\Objects\Delay.obj (DELAY)
 
 
 LINK MAP OF MODULE:  .\Objects\buzzer (?C_STARTUP)
@@ -26,8 +28,10 @@ LINK MAP OF MODULE:  .\Objects\buzzer (?C_STARTUP)
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-            CODE    0003H     000CH     UNIT         ?C_C51STARTUP
-            CODE    000FH     0004H     UNIT         ?PR?MAIN?MAIN
+            CODE    0003H     0015H     UNIT         ?PR?_DELAYXMS?DELAY
+            CODE    0018H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0024H     0009H     UNIT         ?PR?MAIN?MAIN
+            CODE    002DH     0008H     UNIT         ?PR?_BUZZER_RING?BUZEER
 
 
 
@@ -40,6 +44,12 @@ SEGMENT
 ?C_C51STARTUP
   +--> ?PR?MAIN?MAIN
 
+?PR?MAIN?MAIN
+  +--> ?PR?_BUZZER_RING?BUZEER
+
+?PR?_BUZZER_RING?BUZEER
+  +--> ?PR?_DELAYXMS?DELAY
+
 
 
 SYMBOL TABLE OF MODULE:  .\Objects\buzzer (?C_STARTUP)
@@ -48,7 +58,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\buzzer (?C_STARTUP)
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
-  C:0003H         SEGMENT       ?C_C51STARTUP
+  C:0018H         SEGMENT       ?C_C51STARTUP
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/29/2021  15:03:22  PAGE 2
+
+
   I:0008H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
@@ -58,10 +71,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\buzzer (?C_STARTUP)
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:0006H         SYMBOL        IDATALOOP
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/25/2021  10:44:40  PAGE 2
-
-
+  C:001BH         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
   N:0100H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
@@ -70,34 +80,76 @@ SYMBOL TABLE OF MODULE:  .\Objects\buzzer (?C_STARTUP)
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:0003H         SYMBOL        STARTUP1
+  C:0018H         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         126
-  C:0003H         LINE#         133
-  C:0005H         LINE#         134
-  C:0006H         LINE#         135
-  C:0007H         LINE#         136
-  C:0009H         LINE#         185
-  C:000CH         LINE#         196
+  C:0018H         LINE#         133
+  C:001AH         LINE#         134
+  C:001BH         LINE#         135
+  C:001CH         LINE#         136
+  C:001EH         LINE#         185
+  C:0021H         LINE#         196
   -------         ENDMOD        ?C_STARTUP
 
   -------         MODULE        MAIN
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0090H         PUBLIC        P1
-  C:000FH         PUBLIC        main
-  B:0090H.1       PUBLIC        LED
+  C:0024H         PUBLIC        main
   -------         PROC          MAIN
-  C:000FH         LINE#         12
-  C:000FH         LINE#         13
-  C:000FH         LINE#         14
-  C:000FH         LINE#         15
-  C:000FH         LINE#         16
-  C:0011H         LINE#         17
+  C:0024H         LINE#         11
+  C:0024H         LINE#         12
+  C:0024H         LINE#         14
+  C:002BH         LINE#         16
+  C:002BH         LINE#         17
+  C:002BH         LINE#         19
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
-Program Size: data=9.0 xdata=0 code=19
+  -------         MODULE        BUZEER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  B:0090H.1       PUBLIC        Buzzer
+  C:002DH         PUBLIC        _Buzzer_Ring
+  -------         PROC          _BUZZER_RING
+  D:0006H         SYMBOL        Time_ms
+  C:002DH         LINE#         6
+  C:002DH         LINE#         7
+  C:002DH         LINE#         8
+  C:002FH         LINE#         10
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/29/2021  15:03:22  PAGE 3
+
+
+  C:0032H         LINE#         12
+  C:0034H         LINE#         13
+  -------         ENDPROC       _BUZZER_RING
+  -------         ENDMOD        BUZEER
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0003H         PUBLIC        _DelayXms
+  -------         PROC          _DELAYXMS
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         12
+  C:0003H         LINE#         13
+  C:0003H         LINE#         15
+  C:000DH         LINE#         16
+  C:000DH         LINE#         17
+  C:000FH         LINE#         18
+  C:0011H         LINE#         20
+  C:0011H         LINE#         21
+  C:0013H         LINE#         22
+  C:0013H         LINE#         23
+  C:0015H         LINE#         24
+  C:0017H         LINE#         25
+  -------         ENDPROC       _DELAYXMS
+  -------         ENDMOD        DELAY
+
+Program Size: data=9.0 xdata=0 code=53
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

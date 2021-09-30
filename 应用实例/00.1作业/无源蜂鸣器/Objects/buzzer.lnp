@@ -1,5 +1,7 @@
 ".\Objects\STARTUP.obj",
-".\Objects\main.obj" 
+".\Objects\main.obj",
+".\Objects\Buzeer.obj",
+".\Objects\Delay.obj" 
 TO ".\Objects\buzzer" 
 PRINT(".\Listings\buzzer.m51") RAMSIZE(256) 
 DISABLEWARNING (16) 

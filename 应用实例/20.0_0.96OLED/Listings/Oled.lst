@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   OLED                                                                  09/29/2021 02:53:56 PAGE 1   
+C51 COMPILER V9.54   OLED                                                                  09/29/2021 12:57:21 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE OLED
@@ -62,7 +62,7 @@ line level    source
   52   1              Oled_WriteCommand(0xA6);//--normal / reverse
   53   1              Oled_WriteCommand(0xA8);//--set multiplex ratio(1 to 64)
   54   1              Oled_WriteCommand(0x3F);//--1/32 duty
-C51 COMPILER V9.54   OLED                                                                  09/29/2021 02:53:56 PAGE 2   
+C51 COMPILER V9.54   OLED                                                                  09/29/2021 12:57:21 PAGE 2   
 
   55   1              Oled_WriteCommand(0xC8);//Com scan direction
   56   1              Oled_WriteCommand(0xD3);//-set display offset
@@ -126,7 +126,7 @@ line level    source
  114   1              {
  115   2                      Oled_SetPosition(X, Y);
  116   2                      
-C51 COMPILER V9.54   OLED                                                                  09/29/2021 02:53:56 PAGE 3   
+C51 COMPILER V9.54   OLED                                                                  09/29/2021 12:57:21 PAGE 3   
 
  117   2                      for(i = 0; i < 8; i++)
  118   2                              Oled_WriteData(ASC2Code8x16[OffsetAddress][i]);
@@ -190,7 +190,7 @@ line level    source
  176   2                      for(j = 0; j < 16; j++)
  177   2                              Oled_WriteData(Photo[i][j]);
  178   2              }
-C51 COMPILER V9.54   OLED                                                                  09/29/2021 02:53:56 PAGE 4   
+C51 COMPILER V9.54   OLED                                                                  09/29/2021 12:57:21 PAGE 4   
 
  179   1      }
 
