@@ -1,0 +1,289 @@
+C51 COMPILER V9.54   OLED                                                                  10/15/2021 01:17:55 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE OLED
+OBJECT MODULE PLACED IN .\Objects\Oled.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE Oled.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\Oled.lst) OBJECT(.\Objects\Oled.obj)
+
+line level    source
+
+   1          //OLED的显存
+   2          //存放格式如下.
+   3          //[0]0 1 2 3 ... 127    上面为低位，下面为低位
+   4          //[1]0 1 2 3 ... 127    
+   5          //[2]0 1 2 3 ... 127    
+   6          //[3]0 1 2 3 ... 127    
+   7          //[4]0 1 2 3 ... 127    
+   8          //[5]0 1 2 3 ... 127    
+   9          //[6]0 1 2 3 ... 127    
+  10          //[7]0 1 2 3 ... 127
+  11          
+  12          #include <REGX52.H>
+  13          #include "UserDef.H"
+  14          #include "Oled.H"
+  15          #include "I2C.H"
+  16          #include "OledDefineCode.H"
+  17          
+  18          /*******************************************************************************
+  19          * 函 数 名              : Oled_WriteCommand（Oled写命令函数） 
+  20          * 函数功能              : 向Oled写入命令
+  21          * 输    入              : Oled_Command（写入命令内容）
+  22          * 输    出              : 无
+  23          *******************************************************************************/
+  24          static void Oled_WriteCommand(INT8U Oled_Command)
+  25          {
+  26   1              I2C_Start();
+  27   1              I2C_SendByte(0x78);                     //发送从机地址 读写位R/W#=0  SA0=0
+  28   1              I2C_ReceiveAck();
+  29   1              I2C_SendByte(0x00);                     //write command  命令数据位D/C#=0;
+  30   1              I2C_ReceiveAck();
+  31   1              I2C_SendByte(Oled_Command);
+  32   1              I2C_ReceiveAck();
+  33   1              I2C_Stop();
+  34   1      }
+  35          
+  36          /*******************************************************************************
+  37          * 函 数 名              : Oled_WriteData（Oled写数据函数） 
+  38          * 函数功能              : 向Oled写入数据
+  39          * 输    入              : Oled_WriteData（写入数据内容）
+  40          * 输    出              : 无
+  41          *******************************************************************************/
+  42          static void Oled_WriteData(INT8U Oled_Data)
+  43          {
+  44   1              I2C_Start();
+  45   1              I2C_SendByte(0x78);                     //发送从机地址 读写位R/W#=0  SA0=0
+  46   1              I2C_ReceiveAck();
+  47   1              I2C_SendByte(0x40);                     //writedata  命令数据位D/C#=1;
+  48   1              I2C_ReceiveAck();
+  49   1              I2C_SendByte(Oled_Data);
+  50   1              I2C_ReceiveAck();
+  51   1              I2C_Stop();
+  52   1      }
+  53          
+  54          /*******************************************************************************
+C51 COMPILER V9.54   OLED                                                                  10/15/2021 01:17:55 PAGE 2   
+
+  55          * 函 数 名              : Oled_Initialization（Oled初始化函数）
+  56          * 函数功能              : 将Oled初始化后才可以使用该液晶显示屏（暂时没搞懂）
+  57          * 输    入              : 无
+  58          * 输    出              : 无
+  59          *******************************************************************************/
+  60          extern void Oled_Initialization(void)
+  61          {
+  62   1              Oled_WriteCommand(0xAE);//--display off
+  63   1              Oled_WriteCommand(0x00);//---set low column address
+  64   1              Oled_WriteCommand(0x10);//---set high column address
+  65   1              Oled_WriteCommand(0x40);//--set start line address  
+  66   1              Oled_WriteCommand(0xB0);//--set page address
+  67   1              Oled_WriteCommand(0x81);// contract control
+  68   1              Oled_WriteCommand(0xFF);//--128   
+  69   1              Oled_WriteCommand(0xA1);//set segment remap 
+  70   1              Oled_WriteCommand(0xA6);//--normal / reverse
+  71   1              Oled_WriteCommand(0xA8);//--set multiplex ratio(1 to 64)
+  72   1              Oled_WriteCommand(0x3F);//--1/32 duty
+  73   1              Oled_WriteCommand(0xC8);//Com scan direction
+  74   1              Oled_WriteCommand(0xD3);//-set display offset
+  75   1              Oled_WriteCommand(0x00);//
+  76   1              
+  77   1              Oled_WriteCommand(0xD5);//set osc division
+  78   1              Oled_WriteCommand(0x80);//
+  79   1              
+  80   1              Oled_WriteCommand(0xD8);//set area color mode off
+  81   1              Oled_WriteCommand(0x05);//
+  82   1              
+  83   1              Oled_WriteCommand(0xD9);//Set Pre-Charge Period
+  84   1              Oled_WriteCommand(0xF1);//
+  85   1              
+  86   1              Oled_WriteCommand(0xDA);//set com pin configuartion
+  87   1              Oled_WriteCommand(0x12);//
+  88   1              
+  89   1              Oled_WriteCommand(0xDB);//set Vcomh
+  90   1              Oled_WriteCommand(0x30);//
+  91   1              
+  92   1              Oled_WriteCommand(0x8D);//set charge pump enable
+  93   1              Oled_WriteCommand(0x14);//
+  94   1              
+  95   1              Oled_WriteCommand(0xAF);//--turn on oled panel
+  96   1      }
+  97          
+  98          /*******************************************************************************
+  99          * 函 数 名              : Oled_SetPosition（设置显示位置函数）
+ 100          * 函数功能              : 输入显示页数和列数就可以确定显示位置
+ 101          * 输    入              : X（显示的列数，范围：0-127）
+ 102                                            Y（显示页数，范围：0-7）
+ 103          * 输    出              : 无
+ 104          *******************************************************************************/
+ 105          static void Oled_SetPosition(INT8U X, Y)
+ 106          {
+ 107   1              Oled_WriteCommand(0xB0 + Y);
+ 108   1              Oled_WriteCommand(((X & 0xf0) >> 4) | 0x10);
+ 109   1              Oled_WriteCommand(X & 0x0f);
+ 110   1      }
+ 111          
+ 112          /*******************************************************************************
+ 113          * 函 数 名              : Oled_Clear（Oled清屏指令）
+ 114          * 函数功能              : 将Oled显示屏内容清除
+ 115          * 输    入              : 无
+ 116          * 输    出              : 无
+C51 COMPILER V9.54   OLED                                                                  10/15/2021 01:17:55 PAGE 3   
+
+ 117          *******************************************************************************/
+ 118          extern void Oled_Clear(void)
+ 119          {
+ 120   1              INT8U i,j;
+ 121   1              for(i = 0; i < 8; i++)
+ 122   1              {
+ 123   2                      Oled_WriteCommand(0xB0 + i);
+ 124   2                      Oled_WriteCommand(0x00);
+ 125   2                      Oled_WriteCommand(0x10);
+ 126   2                      for(j = 0; j < 128; j++)
+ 127   2                              Oled_WriteData(0); 
+ 128   2              }
+ 129   1      }
+ 130          
+ 131          /*******************************************************************************
+ 132          * 函 数 名              : Oled_ShowChar（显示字符函数）
+ 133          * 函数功能              : 输入显示位置与显示
+ 134          * 输    入              : X（显示的列数，范围：0-127）
+ 135                                            Y（显示页数，范围：0-7）
+ 136                                            Oled_Char（显示的字符）
+ 137                                            FontSize（字体大小，可选SmallSize、MediumSize）
+ 138          * 输    出              : 无
+ 139          *******************************************************************************/
+ 140          extern void Oled_ShowChar(INT8U X, Y, Oled_Char, bit FontSize)
+ 141          {
+ 142   1              INT8U OffsetAddress, i;
+ 143   1              
+ 144   1              OffsetAddress = Oled_Char - ' ';        //得到偏移后的值,空格为ASCⅡ码的初始位置
+ 145   1              
+ 146   1              if(FontSize == SmallSize)
+ 147   1              {
+ 148   2                      Oled_SetPosition(X, Y);
+ 149   2                      
+ 150   2                      for(i = 0; i < 8; i++)
+ 151   2                              Oled_WriteData(ASC2Code8x8[OffsetAddress][i]);
+ 152   2              }
+ 153   1              if(FontSize == MediumSize)
+ 154   1              {
+ 155   2                      Oled_SetPosition(X, Y);
+ 156   2                      
+ 157   2                      for(i = 0; i < 8; i++)
+ 158   2                              Oled_WriteData(ASC2Code8x16[OffsetAddress][i]);
+ 159   2                      
+ 160   2                      Oled_SetPosition(X, Y + 1);
+ 161   2                      
+ 162   2                      for(i = 8; i < 16; i++)
+ 163   2                              Oled_WriteData(ASC2Code8x16[OffsetAddress][i]);
+ 164   2              }
+ 165   1      }
+ 166          
+ 167          /*******************************************************************************
+ 168          * 函 数 名              : Oled_ShowString（显示字符串函数）
+ 169          * 函数功能              : 输入显示位置与显示内容跟显示字体大小就可以显示字符串且拥有自动换行功能
+ 170          * 输    入              : X（显示的列数，范围：0-127）
+ 171                                            Y（显示页数，范围：0-7）
+ 172                                            Oled_String（显示的字符串数组）
+ 173                                            FontSize（字体大小，可选SmallSize、MediumSize）
+ 174          * 输    出              : 
+ 175          *******************************************************************************/
+ 176          extern void Oled_ShowString(INT8U X, Y, INT8U *Oled_String, bit FontSize)
+ 177          {
+ 178   1              INT8U i, j, OffsetAddress;
+C51 COMPILER V9.54   OLED                                                                  10/15/2021 01:17:55 PAGE 4   
+
+ 179   1              
+ 180   1              if(FontSize == SmallSize)
+ 181   1              {
+ 182   2                      Oled_SetPosition(X, Y);
+ 183   2                      
+ 184   2                      for(i = 0; Oled_String[i] != '\0'; i++)
+ 185   2                      {
+ 186   3                              OffsetAddress = Oled_String[i] - ' ';
+ 187   3                              
+ 188   3                              for(j = 0; j < 8; j++)
+ 189   3                                      Oled_WriteData(ASC2Code8x8[OffsetAddress][j]);
+ 190   3                              
+ 191   3                              X += 8;
+ 192   3                              if(X > 120)
+ 193   3                              {
+ 194   4                                      X = 0;
+ 195   4                                      Y ++;
+ 196   4                                      Oled_SetPosition(X, Y);
+ 197   4                              }
+ 198   3                      }
+ 199   2              }
+ 200   1              if(FontSize == MediumSize)
+ 201   1              {
+ 202   2                      for(i = 0; Oled_String[i] != '\0'; i++)
+ 203   2                      {
+ 204   3                              Oled_ShowChar(X,Y, Oled_String[i], FontSize);
+ 205   3                              
+ 206   3                              X += 8;
+ 207   3                              if(X > 120)
+ 208   3                              {
+ 209   4                                      X = 0;
+ 210   4                                      Y += 2;
+ 211   4                                      Oled_SetPosition(X, Y);
+ 212   4                              }
+ 213   3                      }
+ 214   2              }
+ 215   1      }
+ 216          
+ 217          /*******************************************************************************
+ 218          * 函 数 名              : Oled_ShowPhoto（显示图片函数）
+ 219          * 函数功能              : 在Oled上显示预先取模的图片
+ 220          * 输    入              : 无
+ 221          * 输    出              : 无
+ 222          *******************************************************************************/
+ 223          extern void Oled_ShowPhoto(void)
+ 224          {
+ 225   1              INT8U i, j, z;
+ 226   1              for(i = 0; i < 64; i++)
+ 227   1              {
+ 228   2                      z = i / 8;
+ 229   2                      if(i % 8 == 0)
+ 230   2                              Oled_SetPosition(0, z);
+ 231   2                      for(j = 0; j < 16; j++)
+ 232   2                              Oled_WriteData(Photo[i][j]);
+ 233   2              }
+ 234   1      }
+ 235          
+ 236          /*******************************************************************************
+ 237          * 函 数 名              : Oled_ShowChinse（显示中文函数）
+ 238          * 函数功能              : 可以显示预先设置好的中文，可在OledDefineCode.H中查询对应中文代号
+ 239          * 输    入              : X（显示的列数，范围：0-127）
+ 240                                            Y（显示页数，范围：0-7）
+C51 COMPILER V9.54   OLED                                                                  10/15/2021 01:17:55 PAGE 5   
+
+ 241                                            Oled_ShowChinse（显示的中文代号）
+ 242          * 输    出              : 无
+ 243          *******************************************************************************/
+ 244          extern void Oled_ShowChinse(INT8U X, Y, Chinse_Number)
+ 245          {
+ 246   1              INT8U i;
+ 247   1              
+ 248   1              Oled_SetPosition(X, Y);
+ 249   1              
+ 250   1              for(i = 0; i < 16; i++)
+ 251   1                      Oled_WriteData(Chinese[Chinse_Number][i]);
+ 252   1              
+ 253   1              Oled_SetPosition(X, Y + 1);
+ 254   1              
+ 255   1              for(i = 16; i < 32; i++)
+ 256   1                      Oled_WriteData(Chinese[Chinse_Number][i]);
+ 257   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    765    ----
+   CONSTANT SIZE    =   3440    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      27
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
