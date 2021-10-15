@@ -1,7 +1,6 @@
 #include <REGX52.H>
 #include "UserDef.H"
 #include "Uart.H"
-#include "Oled.H"
 
 /*******************************************************************************
 * 函 数 名		: Uart_Initialization 串口通讯函数初始化

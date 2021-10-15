@@ -379,21 +379,6 @@
               <FileType>1</FileType>
               <FilePath>.\Uart.c</FilePath>
             </File>
-            <File>
-              <FileName>I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\I2C.c</FilePath>
-            </File>
-            <File>
-              <FileName>Oled.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Oled.c</FilePath>
-            </File>
-            <File>
-              <FileName>Timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Timer.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>
